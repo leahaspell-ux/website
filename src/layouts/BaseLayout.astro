@@ -1,0 +1,122 @@
+---
+import '../styles/styles.css';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+
+// Pull global site settings from src/content/site.md so SEO copy
+// stays in sync with what editors change.
+const site = await getEntry('sections', 'site');
+const data = site?.data ?? {};
+
+const pageTitle = title ?? data.seoTitle ?? data.brandName ?? 'Aspell Consulting';
+const pageDescription =
+  description ??
+  data.seoDescription ??
+  'Aspell Consulting specializes in Organizational Change Management, Strategic Communication, and Project Coordination.';
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL('/images/logowithtext.png', Astro.site).toString();
+
+// Structured data (JSON-LD) helps search engines understand the business.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: data.brandName ?? 'Aspell Consulting',
+  description: pageDescription,
+  url: Astro.site?.toString(),
+  email: data.email,
+  image: ogImage,
+  logo: new URL('/images/logoonly.png', Astro.site).toString(),
+  sameAs: data.linkedinUrl ? [data.linkedinUrl] : undefined,
+  founder: {
+    '@type': 'Person',
+    name: 'Leah Aspell',
+    sameAs: data.linkedinUrl,
+  },
+  areaServed: 'US',
+  knowsAbout: [
+    'Organizational Change Management',
+    'PROSCI ADKAR',
+    'Strategic Communication',
+    'Project Coordination',
+    'RFID Asset Management',
+    'Artificial Intelligence Implementation',
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#3d1b5e" />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph (Facebook / LinkedIn previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={data.brandName ?? 'Aspell Consulting'} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/images/logoonly.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/images/logoonly.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <slot />
+    <script>
+      // Mobile nav toggle + footer year stamp.
+      (function () {
+        const toggle = document.querySelector('.nav-toggle');
+        const nav = document.getElementById('primary-nav');
+
+        if (toggle && nav) {
+          toggle.addEventListener('click', () => {
+            const open = nav.classList.toggle('is-open');
+            toggle.setAttribute('aria-expanded', String(open));
+          });
+          nav.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement;
+            if (target && target.tagName === 'A') {
+              nav.classList.remove('is-open');
+              toggle.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+
+        const year = document.getElementById('year');
+        if (year) year.textContent = String(new Date().getFullYear());
+      })();
+    </script>
+  </body>
+</html>

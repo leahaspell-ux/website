@@ -1,0 +1,47 @@
+---
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('sections', 'site');
+const data = site?.data;
+const nav = data?.nav ?? [];
+const brandName = data?.brandName ?? 'Aspell Consulting';
+const brandTagline = data?.brandTagline ?? '';
+---
+
+<header class="site-header" id="top">
+  <div class="container nav-wrap">
+    <a class="brand" href="#top" aria-label={`${brandName} home`}>
+      <img src="/images/logoonly.png" alt="" class="brand-logo" />
+      <span class="brand-text">
+        <span class="brand-name">{brandName}</span>
+        {brandTagline && <span class="brand-tagline">{brandTagline}</span>}
+      </span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+      aria-label="Toggle navigation"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item, idx) => (
+            <li>
+              <a
+                href={item.href}
+                class={idx === nav.length - 1 ? 'nav-cta' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

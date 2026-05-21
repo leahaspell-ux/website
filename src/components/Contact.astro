@@ -1,0 +1,57 @@
+---
+import { getEntry, render } from 'astro:content';
+
+const contact = await getEntry('sections', 'contact');
+if (!contact) throw new Error('Missing src/content/contact.md');
+const { Content } = await render(contact);
+const data = contact.data;
+
+const site = await getEntry('sections', 'site');
+const email = site?.data.email ?? 'leah@aspellconsulting.com';
+const linkedinUrl = site?.data.linkedinUrl;
+
+const subject = data.emailSubject ?? 'Aspell Consulting inquiry';
+const mailHref = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+---
+
+<section id="contact" class="section section-alt">
+  <div class="container contact-simple">
+    {data.eyebrow && <p class="eyebrow">{data.eyebrow}</p>}
+    {data.headline && <h2>{data.headline}</h2>}
+
+    <div class="contact-body">
+      <Content />
+    </div>
+
+    <div class="contact-actions">
+      <a class="btn btn-primary btn-lg" href={mailHref}>
+        {data.ctaEmailLabel ?? 'Email Leah'}
+      </a>
+      {
+        linkedinUrl && (
+          <a
+            class="btn btn-ghost btn-lg"
+            href={linkedinUrl}
+            rel="noopener"
+            target="_blank"
+          >
+            {data.ctaLinkedinLabel ?? 'Connect on LinkedIn'}
+          </a>
+        )
+      }
+    </div>
+
+    <p class="contact-direct">
+      Or write directly to <a href={`mailto:${email}`}>{email}</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .contact-body :global(p) {
+    color: var(--color-ink-soft);
+    font-size: 1.05rem;
+    margin: 0 auto 1rem;
+    max-width: 56ch;
+  }
+</style>

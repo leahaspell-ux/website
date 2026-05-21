@@ -1,0 +1,36 @@
+---
+import { getEntry, render } from 'astro:content';
+
+const about = await getEntry('sections', 'about');
+if (!about) throw new Error('Missing src/content/about.md');
+const { Content } = await render(about);
+const data = about.data;
+---
+
+<section id="about" class="section">
+  <div class="container about-grid">
+    {
+      data.photo && (
+        <div class="about-photo">
+          <img src={data.photo} alt={data.photoAlt ?? ''} />
+        </div>
+      )
+    }
+    <div class="about-copy">
+      {data.eyebrow && <p class="eyebrow">{data.eyebrow}</p>}
+      {data.headline && <h2>{data.headline}</h2>}
+
+      <div class="about-body">
+        <Content />
+      </div>
+
+      {
+        data.sectors && data.sectors.length > 0 && (
+          <ul class="sector-list" aria-label="Sectors served">
+            {data.sectors.map((sector) => <li>{sector}</li>)}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</section>

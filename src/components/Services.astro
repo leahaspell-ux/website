@@ -1,0 +1,49 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+
+const header = await getEntry('sections', 'services');
+const services = await getCollection('services');
+const sorted = services.sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(
+  sorted.map(async (s) => ({
+    id: s.id,
+    title: s.data.title,
+    Content: (await render(s)).Content,
+  })),
+);
+---
+
+<section id="services" class="section section-alt">
+  <div class="container">
+    <header class="section-head">
+      {header?.data.eyebrow && <p class="eyebrow">{header.data.eyebrow}</p>}
+      {header?.data.headline && <h2>{header.data.headline}</h2>}
+      {header?.data.subheading && <p class="section-sub">{header.data.subheading}</p>}
+    </header>
+
+    <div class="card-grid">
+      {
+        rendered.map((s) => (
+          <article class="card">
+            <h3>{s.title}</h3>
+            <div class="card-body">
+              <s.Content />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-body :global(p) {
+    color: var(--color-ink-soft);
+    margin: 0;
+    font-size: 0.97rem;
+  }
+  .card-body :global(p + p) {
+    margin-top: 0.6rem;
+  }
+</style>

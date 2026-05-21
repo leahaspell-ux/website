@@ -1,0 +1,50 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+
+const header = await getEntry('sections', 'testimonials');
+const testimonials = await getCollection('testimonials');
+const sorted = testimonials.sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(
+  sorted.map(async (t) => ({
+    id: t.id,
+    name: t.data.name,
+    role: t.data.role,
+    Content: (await render(t)).Content,
+  })),
+);
+---
+
+<section id="testimonials" class="section section-alt">
+  <div class="container">
+    <header class="section-head">
+      {header?.data.eyebrow && <p class="eyebrow">{header.data.eyebrow}</p>}
+      {header?.data.headline && <h2>{header.data.headline}</h2>}
+    </header>
+
+    <div class="card-grid testimonial-grid">
+      {
+        rendered.map((t) => (
+          <figure class="quote-card">
+            <blockquote>
+              <t.Content />
+            </blockquote>
+            <figcaption>
+              <span class="quote-name">{t.name}</span>
+              {t.role && <span class="quote-role">{t.role}</span>}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .quote-card blockquote :global(p) {
+    margin: 0 0 0.6rem;
+  }
+  .quote-card blockquote :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

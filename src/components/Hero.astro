@@ -1,0 +1,66 @@
+---
+import { getEntry, render } from 'astro:content';
+
+const home = await getEntry('sections', 'home');
+if (!home) throw new Error('Missing src/content/home.md');
+const { Content } = await render(home);
+const data = home.data;
+---
+
+<section id="home" class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      {data.eyebrow && <p class="eyebrow">{data.eyebrow}</p>}
+      {data.headline && <h1>{data.headline}</h1>}
+
+      <div class="hero-body">
+        <Content />
+      </div>
+
+      {
+        data.ctas && data.ctas.length > 0 && (
+          <div class="hero-cta">
+            {data.ctas.map((cta) => (
+              <a
+                href={cta.href}
+                class={`btn ${cta.style === 'ghost' ? 'btn-ghost' : 'btn-primary'}`}
+              >
+                {cta.label}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    {
+      (data.statNumber || data.tags) && (
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-card">
+            {data.statNumber && (
+              <div class="hero-stat">
+                <span class="stat-num">{data.statNumber}</span>
+                {data.statLabel && <span class="stat-label">{data.statLabel}</span>}
+              </div>
+            )}
+            {data.tags && data.tags.length > 0 && (
+              <ul class="hero-tags">
+                {data.tags.map((tag) => <li>{tag}</li>)}
+              </ul>
+            )}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  /* hero body paragraphs use the .lede styling defined in styles.css */
+  .hero-body :global(p) {
+    color: var(--color-ink-soft);
+    font-size: 1.05rem;
+    max-width: 56ch;
+    margin: 0 0 1rem;
+  }
+</style>

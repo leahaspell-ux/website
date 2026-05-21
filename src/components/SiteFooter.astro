@@ -1,0 +1,21 @@
+---
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('sections', 'site');
+const data = site?.data;
+const brandName = data?.brandName ?? 'Aspell Consulting';
+const brandTagline = data?.brandTagline ?? '';
+const copyright = data?.footerCopyright ?? `${brandName}. All rights reserved.`;
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <p class="footer-brand">
+      <strong>{brandName}</strong><br />
+      {brandTagline}
+    </p>
+    <p class="footer-meta">
+      &copy; <span id="year"></span> {copyright}
+    </p>
+  </div>
+</footer>
