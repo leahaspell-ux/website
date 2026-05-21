@@ -1,22 +1,22 @@
 /* ---------- Design tokens ---------- */
 :root {
   --color-bg: #ffffff;
-  --color-bg-alt: #f5f7fa;
-  --color-ink: #0f2a44;       /* deep navy */
-  --color-ink-soft: #41566f;
-  --color-muted: #6b7c91;
-  --color-accent: #c89a3a;    /* warm gold */
-  --color-accent-dark: #a37d23;
-  --color-border: #e3e8ef;
+  --color-bg-alt: #f6f4f9;            /* very pale lavender tint */
+  --color-ink: #3d1b5e;                /* brand deep purple */
+  --color-ink-soft: #4f3a6b;
+  --color-muted: #6b6480;
+  --color-accent: #1f5523;             /* brand forest green */
+  --color-accent-dark: #143918;
+  --color-border: #e6e0ee;
   --color-card: #ffffff;
 
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
 
-  --shadow-sm: 0 1px 2px rgba(15, 42, 68, 0.06);
-  --shadow-md: 0 8px 24px rgba(15, 42, 68, 0.08);
-  --shadow-lg: 0 20px 50px rgba(15, 42, 68, 0.12);
+  --shadow-sm: 0 1px 2px rgba(61, 27, 94, 0.06);
+  --shadow-md: 0 8px 24px rgba(61, 27, 94, 0.10);
+  --shadow-lg: 0 20px 50px rgba(61, 27, 94, 0.14);
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -250,8 +250,9 @@ p { margin: 0 0 var(--space-2); }
 .hero {
   padding: clamp(3rem, 7vw, 6rem) 0 clamp(3rem, 7vw, 5rem);
   background:
-    radial-gradient(1200px 600px at 110% -10%, rgba(200, 154, 58, 0.12), transparent 60%),
-    linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    radial-gradient(1200px 600px at 110% -10%, rgba(31, 85, 35, 0.10), transparent 60%),
+    radial-gradient(1000px 500px at -10% 110%, rgba(61, 27, 94, 0.08), transparent 60%),
+    linear-gradient(180deg, #faf8fd 0%, #ffffff 100%);
 }
 
 .hero-grid {
@@ -369,7 +370,7 @@ p { margin: 0 0 var(--space-2); }
 .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  border-color: #d6deea;
+  border-color: #d8cfe6;
 }
 
 .card h3 {
@@ -477,91 +478,47 @@ p { margin: 0 0 var(--space-2); }
 }
 
 /* ---------- Contact ---------- */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: start;
+.contact-simple {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.contact-list {
-  list-style: none;
-  padding: 0;
-  margin: var(--space-3) 0 0;
-  display: grid;
-  gap: var(--space-2);
-}
-
-.contact-list li {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-2);
-  background: var(--color-bg-alt);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-}
-
-.contact-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: 0.2rem;
-}
-
-.contact-form {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  box-shadow: var(--shadow-md);
-  display: grid;
-  gap: var(--space-2);
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.field label {
-  font-size: 0.85rem;
-  font-weight: 600;
+.contact-lede {
   color: var(--color-ink-soft);
+  font-size: 1.05rem;
+  margin: 0 auto var(--space-3);
+  max-width: 56ch;
 }
 
-.field input,
-.field textarea {
-  font: inherit;
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.btn-lg {
+  padding: 1rem 1.75rem;
+  font-size: 1.05rem;
+}
+
+.contact-direct {
+  margin-top: var(--space-2);
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.contact-direct a {
+  font-weight: 600;
   color: var(--color-ink);
-  padding: 0.7rem 0.85rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: #fff;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.field input:focus,
-.field textarea:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(200, 154, 58, 0.2);
-}
-
-.field textarea {
-  resize: vertical;
-  min-height: 130px;
-}
-
-.contact-form .btn {
-  justify-self: start;
 }
 
 /* ---------- Footer ---------- */
 .site-footer {
   background: var(--color-ink);
-  color: #cbd5e1;
+  color: #d9d1e6;
   padding: var(--space-4) 0;
   margin-top: var(--space-5);
 }
@@ -596,8 +553,7 @@ p { margin: 0 0 var(--space-2); }
 /* ---------- Responsive ---------- */
 @media (max-width: 880px) {
   .hero-grid,
-  .about-grid,
-  .contact-grid {
+  .about-grid {
     grid-template-columns: 1fr;
   }
 
