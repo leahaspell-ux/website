@@ -59,3 +59,4 @@ One-time repository setup:
 1. Settings → Pages → **Source** = `GitHub Actions`.
 2. Settings → Pages → **Custom domain** = `aspellconsulting.com`
    (DNS A/CNAME records must already point at GitHub Pages).
+
